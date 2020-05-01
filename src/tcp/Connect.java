@@ -5,6 +5,8 @@ import tools.PARAMETER;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Connect类
@@ -25,7 +27,6 @@ public class Connect {
         Socket socket;
         while(true){
             socket = serverSocket.accept();
-            System.out.println("监听到连接："+socket.getInetAddress());
             new NewConnect(socket);
         }
 
