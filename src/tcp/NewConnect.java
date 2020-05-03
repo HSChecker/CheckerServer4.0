@@ -26,6 +26,7 @@ import java.util.List;
  */
 public class NewConnect implements Runnable, Player {
 
+    private NewConnect T = this;
     private Socket socket;
     private PrintWriter bw;
     private Room inRoom;
@@ -93,7 +94,7 @@ public class NewConnect implements Runnable, Player {
                                 bw.println("loginResult true");
                                 bw.flush();
                             }
-                            addListen(new createRoom());
+                            addListen(new createRoom(T));
                         }
                     });
                 }
