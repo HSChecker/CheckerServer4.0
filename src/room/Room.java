@@ -10,26 +10,55 @@ import tcp.NewConnect;
  * @author HanShuo
  * @Date 2020/4/26 8:54
  */
-public class Room implements Runnable{
+public class Room implements Runnable {
 
+    private static int idNum = 10000;
     private int id;
     private Player white;
-    private Player Black;
+    private Player black;
+    private boolean whiteReady = false;
+    private boolean blackReady = false;
 
-    public Room(Player white, Player black) {
+    public Room(Player black, Player white) {
         AllManager.getRoomList().add(this);
         this.white = white;
-        Black = black;
+        this.black = black;
+        id = ++idNum;
     }
 
     @Override
     public void run() {
-        try {
-            white.waitReady();
-            white.waitReady();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+    }
+
+    public void whiteReady() {
+        whiteReady = true;
+        if (blackReady)
+            new Thread(this).start();
+    }
+
+    public void blackReady() {
+        blackReady = true;
+        if (whiteReady)
+            new Thread(this).start();
+    }
+
+    public void whiteJoin(Player w) {
+        white = w;
+    }
+
+    public void blackJoin(Player b) {
+        black = b;
+    }
+
+    public void whiteLeave(){
+        white = null;
+        whiteReady = false;
+    }
+
+    public void blackLeave(){
+        black = null;
+        blackReady = false;
     }
 
     public int getId() {
@@ -40,15 +69,15 @@ public class Room implements Runnable{
         return white;
     }
 
-    public void setWhite(NewConnect white) {
+    public void setWhite(Player white) {
         this.white = white;
     }
 
     public Player getBlack() {
-        return Black;
+        return black;
     }
 
-    public void setBlack(NewConnect black) {
-        Black = black;
+    public void setBlack(Player black) {
+        this.black = black;
     }
 }
